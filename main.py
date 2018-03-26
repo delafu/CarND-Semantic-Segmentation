@@ -89,7 +89,12 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     :return: Tuple of (logits, train_op, cross_entropy_loss)
     """
     # TODO: Implement function
-    return None, None, None
+    logits = tf.reshape(nn_last_layer, (-1, num_classes))
+    correct_label = tf.reshape(correct_label, (-1,num_classes))
+    cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label))
+    optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
+    minimizer = optimizer.minimize(cross_entropy_loss)
+    return logits, minimizer, cross_entropy_loss
 tests.test_optimize(optimize)
 
 
@@ -109,6 +114,9 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param learning_rate: TF Placeholder for learning rate
     """
     # TODO: Implement function
+    for i in range(epochs):
+        for image, label in get_batches_fn(batch_size):
+            sess.run()
     pass
 tests.test_train_nn(train_nn)
 
@@ -137,7 +145,8 @@ def run():
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
         # TODO: Build NN using load_vgg, layers, and optimize function
-
+        input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess,vgg_path)
+        layer_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
         # TODO: Train NN using the train_nn function
 
         # TODO: Save inference data using helper.save_inference_samples
