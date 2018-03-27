@@ -5,10 +5,10 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 
-KEEP_PROB = 1.0
+KEEP_PROB = 0.5
 LEARNING_RATE = 0.06
 EPOCHS = 50
-BATCH_SIZE = 50
+BATCH_SIZE = 10
 
 
 
@@ -120,10 +120,11 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param learning_rate: TF Placeholder for learning rate
     """
     # TODO: Implement function
+    sess.run(tf.global_variables_initializer())
     for i in range(epochs):
         for image, label in get_batches_fn(batch_size):
             _, loss = sess.run([train_op, cross_entropy_loss],
-                        feed_dict={input_image: image, correct_label: label, keep_prob: keep_prob, learning_rate: learning_rate})
+                        feed_dict={input_image: image, correct_label: label, keep_prob: KEEP_PROB, learning_rate: LEARNING_RATE})
             print("Epoch {} Loss: = {:.3f}\n".format(i,loss))
 tests.test_train_nn(train_nn)
 
@@ -162,7 +163,7 @@ def run():
         # TODO: Train NN using the train_nn function
 
         # TODO: Save inference data using helper.save_inference_samples
-        #  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+        helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
 
         # OPTIONAL: Apply the trained model to a video
 
