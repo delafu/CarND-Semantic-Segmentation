@@ -6,7 +6,7 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 KEEP_PROB = 0.5
-LEARNING_RATE = 0.06
+LEARNING_RATE = 0.001
 EPOCHS = 50
 BATCH_SIZE = 10
 
@@ -99,10 +99,10 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     logits = tf.reshape(nn_last_layer, (-1, num_classes))
     correct_label = tf.reshape(correct_label, (-1,num_classes))
     cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label))
-    optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
-    #reg_ws = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
-    #loss_fn = cross_entropy_loss + tf.reduce_sum(reg_ws)
-    minimizer = optimizer.minimize(cross_entropy_loss)
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+    reg_ws = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
+    loss_fn = cross_entropy_loss + tf.reduce_sum(reg_ws)
+    minimizer = optimizer.minimize(loss_fn)
     return logits, minimizer, cross_entropy_loss
 tests.test_optimize(optimize)
 
