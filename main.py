@@ -103,7 +103,7 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     #reg_ws = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
     #loss_fn = cross_entropy_loss + tf.reduce_sum(reg_ws)
     minimizer = optimizer.minimize(cross_entropy_loss)
-    return logits, minimizer, loss_fn
+    return logits, minimizer, cross_entropy_loss
 tests.test_optimize(optimize)
 
 
