@@ -59,7 +59,8 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :return: The Tensor for the last layer of output
     """
     # TODO: Implement function
-
+    vgg_layer3_out = tf.multiply(vgg_layer3_out, 0.0001, name='pool3_out_scaled')
+    vgg_layer4_out = tf.multiply(vgg_layer4_out, 0.01, name='pool4_out_scaled')
     conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same',
                                 kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
@@ -99,6 +100,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     correct_label = tf.reshape(correct_label, (-1,num_classes))
     cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label))
     optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
+    #reg_ws = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
+    #loss_fn = cross_entropy_loss + tf.reduce_sum(reg_ws)
     minimizer = optimizer.minimize(cross_entropy_loss)
     return logits, minimizer, cross_entropy_loss
 tests.test_optimize(optimize)
