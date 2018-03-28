@@ -6,8 +6,8 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 KEEP_PROB = 0.5
-LEARNING_RATE = 0.001
-EPOCHS = 100
+LEARNING_RATE = 0.002
+EPOCHS = 125
 BATCH_SIZE = 10
 
 
