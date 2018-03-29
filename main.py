@@ -7,7 +7,7 @@ import project_tests as tests
 
 KEEP_PROB = 0.5
 LEARNING_RATE = 0.001
-EPOCHS = 100
+EPOCHS = 70
 BATCH_SIZE = 10
 
 
